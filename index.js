@@ -1,13 +1,13 @@
+// 任意的功能：1.找见关键数据 2.将数据与视图建立联系3.操控数据
+//在控制要显示的数据的时候，千万不要通过点击按钮来直接控制所有的数据，而是利用计算属性，创造出两个新的数据。一个全部都是完成的，一个全部都是未完成的，然后再创造一个真正要显示的数据
+//创建vue实例
 new Vue({
-    el: "#app",
+    el: "#app", //将实例挂载在#app上
     data: {
-        todos:[
-            {id:1,content:"在控制要显示的数据的时候，千万不要通过点击按钮来直接控制所有的数据，而是利用计算属性，创造出两个新的数据。一个全部都是完成的，一个全部都是未完成的，然后再创造一个真正要显示的数据",isFinished:false,isSelected:false},
-            {id:2,content:"这是一个用纯文本的简单卡片。但卡片可以包含自己的页头，页脚，列表视图，图像，和里面的任何元素。",isFinished:true,isSelected:false},
-            {id:3,content:"这是一个用纯文本的简单卡片。但卡片可以包含自己的页头，页脚，列表视图，图像，和里面的任何元素。",isFinished:true,isSelected:false},
-            {id:4,content:"这是一个用纯文本的简单卡片.",isFinished:true,isSelected:false}
-        ],
-        showBtns:[ //控制显示类型的按钮
+        //下面两条数据应该从本地存储里取出使用
+        count_id:JSON.parse(localStorage.todos||'[]').length,
+        todos:JSON.parse(localStorage.todos||'[]'), //存放所有todos
+        controlNav:[ //控制普通模式的操控按钮，控制显示什么类型的todo
             {id:1,title:'A',type:'all',theme:'success'},
             {id:2,title:'F',type:'finished',theme:'primary'},
             {id:3,title:'U',type:'unfinished',theme:'warning'},
@@ -15,16 +15,16 @@ new Vue({
         activeShowType:'all', //用来处理到底要显示什么类型的数据
         isRemoveShow:false,
         preRemoveId:null, //准备要删除的todo的id
-        isInpShow:false,
-        newtitle:'',
-        isSelectShow:true,
-        navs:[
+        isInpShow:false, //关键数据：控制输入布局的
+        newtitle:'', //新增todo的input绑定的数据
+        isSelectShow:true, //关键数据：控制按钮切换模式
+        selectNavs:[ //选择模式的操控按钮
             {id:1,title:'A',type:'all',theme:'success'},
             {id:2,title:'F',type:'finished',theme:'primary'},
             {id:3,title:'U',type:'unfinished',theme:'warning'},
             {id:4,title:'C',type:'remove',theme:'danger'}
         ],
-        activeShowNavType:'all'
+        controlIndex:1 //关键数据，控制显示什么类型的todo
     },
     methods: {
         //点击删除按钮删除数据的方法
@@ -46,9 +46,74 @@ new Vue({
             this.todos = this.todos.filter(todo=>{
                 return todo.id !== id ? todo : false;
             })
+            //更新本地存储
+            localStorage.todos = JSON.stringify(this.todos);
         },
-        add(){
-            // @click="selectMethod(nav.id)"  
+        finishTodo(id){ //完成某个todo
+            this.todos.forEach((item=>{
+                if(item.id == id){
+                    item.isFinished = true
+                }
+            }))
+        },
+        add(){  //增加新的todo
+            this.todos.push({
+                title:this.newtitle,
+                isFinished:false,
+                id:++this.count_id
+            })
+            //使新增布局消失
+            this.isInpShow = false;
+            localStorage.todos = JSON.stringify(this.todos)
+        },
+        selectAll(){ //全选
+            let isAll = this.todos.every((item)=>{
+                return item.isSelected
+            })
+            this.todos.forEach((item)=>{
+                return item.isSelected = !isAll
+            })
+        },
+        controlAll(type){
+            this.todos.forEach((item)=>{
+                if(item.isSelected){
+                    item.isFinished = type
+                }
+            })
+            localStorage.todos = JSON.stringify(this.todos)
+        },
+        removeAll(){ //删除所有
+            this.todos=this.todos.filter((item)=>{
+                if(!item.isSelected){
+                    return item;
+                }
+            })
+            localStorage.todos = JSON.stringify(this.todos)
+        },
+        selectMethod(id){
+            this.controlIndex = id
+            //根据点击按钮后传入的id执行不同的动作
+            switch(id){
+                case 1:this.selectAll();break;
+                case 2:this.controlAll(true);break;
+                case 3:this.controlAll(false);break;
+                case 4:this.removeAll();break;
+                default:break;
+            }
+        }
+    },
+    watch:{
+        isInpShow : function(newval){
+            //当新增布局消失的时候，清空
+            this.newtitle = ''
+        },
+        isSelectShow:function(newval){
+            if(newval === false){
+                //如果模式切换为普通模式的时候
+                this.todos.forEach((item)=>{
+                    item.isSelected = false
+                })
+            }
         }
     },
     computed: {
@@ -61,12 +126,13 @@ new Vue({
         },
         //全部都是未完成的
         unfinishedTodos(){
+            //根据所有的todos得到未完成的todos
             return this.todos.filter( todo =>{
                 return !todo.isFinished ? 'todo':false;
             })
         },
         showTodos(){
-            //真正要显示的数据
+            //真正要显示的数据,根据关键数据返回对应类型
             switch(this.activeShowType){
                 case 'all' :return this.todos;
                 case 'finished':return this.finishedTodos;

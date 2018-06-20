@@ -25,7 +25,7 @@
             <div class="card" v-for="todo in showTodos" :key="todo.id">
                 <div class="card-content">
                     <input type="checkbox" v-model="todo.isSelected"  v-if="isSelectShow">
-                    <div class="card-content-inner">{{ todo.content }}</div>
+                    <div class="card-content-inner">{{ todo.title }}</div>
                 </div>
                 <div class="card-footer">
                     <p class="color-gray">发表于 2015/01/15</p>
@@ -59,16 +59,15 @@
         <!-- show btns start -->
         <nav v-if="isSelectShow" class="btns-box show-btns bar bar-tab">
             <div 
-                v-for="nav of navs" 
-                :key="nav.id" 
-                @click="activeShowNavType = nav.type"
-               
-                :class="['circle-'+ nav.theme,activeShowNavType===nav.type?'circle-fill':'']"
-                class="circle">{{ nav.title }}</div>     
+                v-for="nav of selectNavs" 
+                :key="nav.id"   
+                @click="selectMethod(nav.id)"
+                :class="['circle-'+ nav.theme,controlIndex===nav.id?'circle-fill':'']"
+                class="circle">{{ nav.title }}</div> 
         </nav>
         <nav v-else class="btns-box show-btns bar bar-tab">
                 <div 
-                    v-for="btn of showBtns" 
+                    v-for="btn of controlNav" 
                     :key="btn.id" 
                     @click="activeShowType = btn.type"
                     :class="['circle-'+ btn.theme,activeShowType===btn.type?'circle-fill':'']"
@@ -85,7 +84,7 @@
         <transition enter-active-class="slideInUp" leave-active-class="slideOutDown">
         	<div v-if="isInpShow" class="inp-content animated content">
         		<textarea v-model="newtitle"></textarea>
-        		
+        		<!-- 新增todo -->
         		<div class="control btns-box">
         			<div @click="add" class="circle circle-success circle-fill">OK</div>
         			<div @click="isInpShow=false" class="circle circle-success circle-fill">CL</div>
