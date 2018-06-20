@@ -23,7 +23,6 @@
         <div class="content">
             <!-- 循环卡片 -->
             <div class="card" v-for="todo in todos" :key="todo.id">
-                <div class="card-header">{{ todo.header }}</div>
                 <div class="card-content">
                     <div class="card-content-inner">{{ todo.content }}</div>
                 </div>
@@ -43,6 +42,40 @@
             <!-- 循环卡片结束 -->
         </div>
         <!-- content end -->
+        <!-- remove message start -->
+        <!-- <div class="remove-message">
+            <div class="modal modal-in" style="display: block; margin-top: -57px;">
+                <template v-for="true">
+                    <div class="modal-inner">
+                        <div class="modal-text">该事项未完成，确定删除么？</div>
+                    </div>
+                    <div class="modal-buttons ">
+                        <span class="modal-button">取消</span>
+                        <span class="modal-button modal-button-bold">确定</span>
+                    </div>
+                </template>
+                <template v-else>
+                    <div class="modal-inner">
+                        <div class="modal-text">删除成功！</div>
+                    </div>
+                    <div class="modal-buttons ">
+                        <span class="modal-button modal-button-bold">确定</span>
+                    </div>
+                </template>
+            </div>
+        </div>       -->
+        <!-- remove message end -->
+        <!-- show btns start -->
+        <div class="btns-box show-btns">
+            <div 
+                v-for="btn of showBtns" 
+                :key="btn.id" 
+                @click="activeShowType = btn.type"
+                :class="['circle-'+ btn.theme,activeShowType===btn.type?'circle-fill':'']"
+                class="circle">{{ btn.title }}</div>
+            
+        </div>
+        <!-- show btns end -->
     </div>
     <!-- 在开发环境下不要使用压缩版本，不然你就失去了所有常见错误相关的警告! -->
     <script src="base/vue.js"></script>

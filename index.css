@@ -7,3 +7,70 @@
 .card .btn-box button{
     margin:0 5px;
 }
+/* mark */
+.remove-message{
+    position: absolute;
+    top:0;right:0;bottom:0;left:0;
+    background: rgba(0,0,0,.2);
+    z-index: 11;
+}
+.modal-inner,.modal-button{
+    background:#fff;
+}
+/* check btns */
+.show-btns{
+    position: absolute;
+    bottom:0;
+    width:100%;
+    height:60px;
+    z-index:111;
+    display: flex;
+    justify-content: space-around;
+    align-items:center;
+    
+}
+.circle{
+    display: flex;  
+    justify-content: center;
+    align-items: center;
+    width:50px;
+    height:50px;
+    border:1px solid #ccc;
+    background:#fff;
+    border-radius: 50%;
+}
+/* 第一个按钮 */
+.btns-box .circle.circle-success{
+    border-color:rgb(26,182,65);
+    color:rgb(26,182,65);
+}
+.btns-box .circle.circle-success.circle-fill{
+    background:rgb(26,182,65);
+    color:#fff;
+}
+/* 第二个按钮 */
+.btns-box .circle.circle-primary {
+    border-color: rgb(14, 123, 185);
+    color: rgb(14, 123, 185);
+}
+.btns-box .circle.circle-primary.circle-fill {
+    background: rgb(14, 123, 185);
+    color: #fff;
+}
+/* 第三个按钮 */
+.btns-box .circle.circle-danger {
+    border-color: rgb(236, 17, 46);
+    color: rgb(236, 17, 46);
+}
+.btns-box .circle.circle-danger.circle-fill {
+    background: rgb(236, 17, 46);
+    color: #fff;
+}
+.btns-box .circle.circle-warning {
+    border-color: rgb(223, 202, 18);
+    color: rgb(223, 202, 18);
+}
+.btns-box .circle.circle-warning.circle-fill {
+    background: rgb(223, 202, 18);
+    color: #fff;
+}
