@@ -1,21 +1,34 @@
 * {
 	box-sizing: border-box;
 }
+.card input[type=checkbox]{
+    margin-left:10px;
+}
+.card-content{
+    display: flex;
+    align-items:center;
+    min-height:100px;
+    flex-grow:1;flex-shrink: 1;
+}
 .btn-box{
     display: flex;
 }
 .card .btn-box button{
     margin:0 5px;
 }
+
 .content{
     padding-bottom:58px;
+}
+.card-content-inner{
+    flex-grow:1;flex-shrink:1;
 }
 /* mark */
 .remove-message{
     position: absolute;
     top:0;right:0;bottom:0;left:0;
     background: rgba(0,0,0,.2);
-    z-index: 11;
+    z-index:100;
 }
 .modal-inner,.modal-button{
     background:#fff;
@@ -26,7 +39,7 @@
     bottom:0;
     width:100%;
     height:60px;
-    z-index:10;
+    z-index:99;
     display: flex;
     justify-content: space-around;
     align-items:center; 

@@ -14,8 +14,8 @@
     <div id="app">
         <!-- header start  -->
         <header class="bar bar-nav">
-            <a class="icon icon-star pull-left"></a>
-            <a class="icon icon-edit pull-right"></a>
+            <a @click="isSelectShow=!isSelectShow" class="icon icon-star pull-left"></a>
+            <a @click="isInpShow=!isInpShow" class="icon icon-edit pull-right"></a>
             <h1 class="title">TodoList</h1>
         </header>
         <!-- header end -->
@@ -24,11 +24,12 @@
             <!-- 循环卡片 -->
             <div class="card" v-for="todo in showTodos" :key="todo.id">
                 <div class="card-content">
+                    <input type="checkbox" v-model="todo.isSelected"  v-if="isSelectShow">
                     <div class="card-content-inner">{{ todo.content }}</div>
                 </div>
                 <div class="card-footer">
                     <p class="color-gray">发表于 2015/01/15</p>
-                    <div class="btn-box">
+                    <div class="btn-box control">
                         <button class="button button-success"
                         @click="todo.isFinished = !todo.isFinished" :class="{ 'button-fill':todo.isFinished }">
                             <i class="icon icon-check pull-right"></i>
@@ -56,16 +57,42 @@
         </div>       
         <!-- remove message end -->
         <!-- show btns start -->
-        <div class="btns-box show-btns">
+        <nav v-if="isSelectShow" class="btns-box show-btns bar bar-tab">
             <div 
-                v-for="btn of showBtns" 
-                :key="btn.id" 
-                @click="activeShowType = btn.type"
-                :class="['circle-'+ btn.theme,activeShowType===btn.type?'circle-fill':'']"
-                class="circle">{{ btn.title }}</div>
-            
-        </div>
+                v-for="nav of navs" 
+                :key="nav.id" 
+                @click="activeShowNavType = nav.type"
+               
+                :class="['circle-'+ nav.theme,activeShowNavType===nav.type?'circle-fill':'']"
+                class="circle">{{ nav.title }}</div>     
+        </nav>
+        <nav v-else class="btns-box show-btns bar bar-tab">
+                <div 
+                    v-for="btn of showBtns" 
+                    :key="btn.id" 
+                    @click="activeShowType = btn.type"
+                    :class="['circle-'+ btn.theme,activeShowType===btn.type?'circle-fill':'']"
+                    class="circle">{{ btn.title }}</div>
+                
+            </nav>
         <!-- show btns end -->
+        <!-- write start -->
+            <!-- 遮罩的显示 -->
+        <transition enter-active-class="fadeIn" leave-active-class="fadeOut">
+        	<div v-if="isInpShow" class="mask animated"></div>	
+        </transition>
+            <!-- 写入的内容 -->
+        <transition enter-active-class="slideInUp" leave-active-class="slideOutDown">
+        	<div v-if="isInpShow" class="inp-content animated">
+        		<textarea v-module="newtitle"></textarea>
+        		
+        		<div class="btn-box">
+        			<div @click="add" class="circle success"></div>
+        			<div @click="isInpShow=false" class="circle danger"></div>
+        		</div>
+        	</div>
+        </transition>
+        <!-- write end -->
     </div>
     <!-- 在开发环境下不要使用压缩版本，不然你就失去了所有常见错误相关的警告! -->
     <script src="base/vue.js"></script>
