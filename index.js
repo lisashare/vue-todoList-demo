@@ -7,16 +7,37 @@ new Vue({
             {id:3,content:"这是一个用纯文本的简单卡片。但卡片可以包含自己的页头，页脚，列表视图，图像，和里面的任何元素。",isFinished:true},
             {id:4,content:"这是一个用纯文本的简单卡片.",isFinished:true}
         ],
-        showBtns:[
+        showBtns:[ //控制显示类型的按钮
             {id:1,title:'A',type:'all',theme:'success'},
             {id:2,title:'F',type:'finished',theme:'primary'},
             {id:3,title:'U',type:'unfinished',theme:'danger'},
         ],
-        activeShowType:'all' //
+        activeShowType:'all', //用来处理到底要显示什么类型的数据
+        isRemoveShow:false,
+        preRemoveId:null, //准备要删除的todo的id
     },
     methods: {
-        checkFinished(id){
+        //点击删除按钮删除数据的方法
+        checkFinished(id,isFinished){
+            
+            //如果未完成做出弹出框提示
+            if(!isFinished){
+                this.isRemoveShow = true;
+                this.preRemoveId = id;//把准备要删除的id先存一波
+                return false;
+            }
 
+            this.removeTodo(id);
+
+        },
+        removeTodo(id){
+            //负责删除某一个todo,接收到要删除的todo的id,当数据改变后，vue重新编译模板重新渲染
+            if(this.isRemoveShow){
+                this.isRemoveShow = false;
+            }
+            this.todos = this.todos.filter(todo=>{
+                return todo.id !== id ? todo : false;
+            })
         }
     },
     computed: {

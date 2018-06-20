@@ -33,7 +33,7 @@
                         @click="todo.isFinished = !todo.isFinished" :class="{ 'button-fill':todo.isFinished }">
                             <i class="icon icon-check pull-right"></i>
                         </button>
-                        <button class="button button-danger">
+                        <button @click="checkFinished(todo.id,todo.isFinished)" class="button button-danger">
                             <i class="icon icon-remove pull-right"></i>
                         </button>
                     </div>
@@ -43,27 +43,17 @@
         </div>
         <!-- content end -->
         <!-- remove message start -->
-        <!-- <div class="remove-message">
+        <div v-if="isRemoveShow" class="remove-message">
             <div class="modal modal-in" style="display: block; margin-top: -57px;">
-                <template v-for="true">
-                    <div class="modal-inner">
-                        <div class="modal-text">该事项未完成，确定删除么？</div>
-                    </div>
-                    <div class="modal-buttons ">
-                        <span class="modal-button">取消</span>
-                        <span class="modal-button modal-button-bold">确定</span>
-                    </div>
-                </template>
-                <template v-else>
-                    <div class="modal-inner">
-                        <div class="modal-text">删除成功！</div>
-                    </div>
-                    <div class="modal-buttons ">
-                        <span class="modal-button modal-button-bold">确定</span>
-                    </div>
-                </template>
+                <div class="modal-inner">
+                    <div class="modal-text">该事项未完成，确定删除么？</div>
+                </div>
+                <div class="modal-buttons">
+                    <span class="modal-button" @click="isRemoveShow = !isRemoveShow">取消</span>
+                    <span class="modal-button modal-button-bold" @click="removeTodo(preRemoveId)">确定</span>
+                </div>           
             </div>
-        </div>       -->
+        </div>       
         <!-- remove message end -->
         <!-- show btns start -->
         <div class="btns-box show-btns">
