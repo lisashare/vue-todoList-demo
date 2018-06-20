@@ -1,0 +1,9 @@
+* {
+	box-sizing: border-box;
+}
+.btn-box{
+    display: flex;
+}
+.card .btn-box button{
+    margin:0 5px;
+}

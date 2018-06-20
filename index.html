@@ -22,22 +22,22 @@
         <!-- content start -->
         <div class="content">
             <!-- 循环卡片 -->
-            <div class="card">
-                <div class="card-header">卡头</div>
+            <div class="card" v-for="todo in todos" :key="todo.id">
+                <div class="card-header">{{ todo.header }}</div>
                 <div class="card-content">
-                    <div class="card-content-inner">这是一个用纯文本的简单卡片。但卡片可以包含自己的页头，页脚，列表视图，图像，和里面的任何元素。</div>
+                    <div class="card-content-inner">{{ todo.content }}</div>
                 </div>
                 <div class="card-footer">
                     <p class="color-gray">发表于 2015/01/15</p>
                     <div class="btn-box">
-                        <button class="button button-success button-fill">
+                        <button class="button button-success"
+                        @click="todo.isFinished = !todo.isFinished" :class="{ 'button-fill':todo.isFinished }">
                             <i class="icon icon-check pull-right"></i>
                         </button>
                         <button class="button button-danger">
                             <i class="icon icon-remove pull-right"></i>
                         </button>
                     </div>
-                    
                 </div>
             </div>
             <!-- 循环卡片结束 -->
