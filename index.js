@@ -26,9 +26,7 @@ new Vue({
                 this.preRemoveId = id;//把准备要删除的id先存一波
                 return false;
             }
-
             this.removeTodo(id);
-
         },
         removeTodo(id){
             //负责删除某一个todo,接收到要删除的todo的id,当数据改变后，vue重新编译模板重新渲染
@@ -41,6 +39,27 @@ new Vue({
         }
     },
     computed: {
-
+        //全部都是已经完成的
+        finishedTodos(){
+            //根据现有的全部的todos去生成一个全部都是已经完成的todos新数据
+            return this.todos.filter( todo =>{
+                return todo.isFinished ? 'todo':false;
+            })
+        },
+        //全部都是未完成的
+        unfinishedTodos(){
+        	//根据现有的全部的todos去生成一个全部都是未完成的todos新数据
+            return this.todos.filter( todo =>{
+                return !todo.isFinished ? 'todo':false;
+            })
+        },
+        showTodos(){
+            //真正要显示的数据
+            switch(this.activeShowType){
+                case 'all' :return this.todos;
+                case 'finished':return this.finishedTodos;
+                case 'unfinished':return this.unfinishedTodos;
+            }        
+        }
     }
 })
