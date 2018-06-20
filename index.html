@@ -22,7 +22,7 @@
         <!-- content start -->
         <div class="content">
             <!-- 循环卡片 -->
-            <div class="card" v-for="todo in todos" :key="todo.id">
+            <div class="card" v-for="todo in showTodos" :key="todo.id">
                 <div class="card-content">
                     <div class="card-content-inner">{{ todo.content }}</div>
                 </div>
