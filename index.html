@@ -29,7 +29,7 @@
                 </div>
                 <div class="card-footer">
                     <p class="color-gray">发表于 2015/01/15</p>
-                    <div class="btn-box control">
+                    <div class="btn-box ">
                         <button class="button button-success"
                         @click="todo.isFinished = !todo.isFinished" :class="{ 'button-fill':todo.isFinished }">
                             <i class="icon icon-check pull-right"></i>
@@ -83,12 +83,12 @@
         </transition>
             <!-- 写入的内容 -->
         <transition enter-active-class="slideInUp" leave-active-class="slideOutDown">
-        	<div v-if="isInpShow" class="inp-content animated">
-        		<textarea v-module="newtitle"></textarea>
+        	<div v-if="isInpShow" class="inp-content animated content">
+        		<textarea v-model="newtitle"></textarea>
         		
-        		<div class="btn-box">
-        			<div @click="add" class="circle success"></div>
-        			<div @click="isInpShow=false" class="circle danger"></div>
+        		<div class="control btns-box">
+        			<div @click="add" class="circle circle-success circle-fill">OK</div>
+        			<div @click="isInpShow=false" class="circle circle-success circle-fill">CL</div>
         		</div>
         	</div>
         </transition>
