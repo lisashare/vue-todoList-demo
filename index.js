@@ -26,10 +26,10 @@ new Vue({
         newtitle:'', //新增todo的input绑定的数据
         isSelectShow:false, //关键数据：控制按钮切换模式
         selectNavs:[ //选择模式的操控按钮
-            {id:1,title:'A',type:'all',theme:'success'},
-            {id:2,title:'F',type:'finished',theme:'primary'},
-            {id:3,title:'U',type:'unfinished',theme:'warning'},
-            {id:4,title:'C',type:'remove',theme:'danger'}
+            {id:1,title:'A',theme:'success'},
+            {id:2,title:'F',theme:'primary'},
+            {id:3,title:'U',theme:'warning'},
+            {id:4,title:'C',theme:'danger'}
         ],
         controlIndex:1 //关键数据，控制显示什么类型的todo
     },
@@ -59,14 +59,14 @@ new Vue({
         finishTodo(id){ //完成某个todo
             this.todos.forEach((item=>{
                 if(item.id == id){
-                    item.isFinished = true
+                    return item.isFinished = !item.isFinished;
                 }
             }))
+            localStorage.todos = JSON.stringify(this.todos);
         },
         add(){  //增加新的todo
-            newtitle = this.newtitle
             this.todos.unshift({
-                title:newtitle,
+                title:this.newtitle,
                 isFinished:false,
                 id:++this.count_id,
                 time:Date.now()
@@ -86,7 +86,7 @@ new Vue({
         controlAll(type){
             this.todos.forEach((item)=>{
                 if(item.isSelected){
-                    item.isFinished = type
+                    item.isFinished = type;
                 }
             })
             localStorage.todos = JSON.stringify(this.todos)
@@ -100,7 +100,7 @@ new Vue({
             localStorage.todos = JSON.stringify(this.todos)
         },
         selectMethod(id){
-            this.controlIndex = id
+            this.controlIndex = id;
             //根据点击按钮后传入的id执行不同的动作
             switch(id){
                 case 1:this.selectAll();break;
@@ -138,7 +138,7 @@ new Vue({
     watch:{
         isInpShow : function(newval){
             //当新增布局消失的时候，清空
-            this.newtitle = ''
+            this.newtitle = '';
         },
         isSelectShow : function(newval){
             if(newval === true){

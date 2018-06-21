@@ -31,7 +31,8 @@
                     <p class="color-gray">发表于 {{ todo.time | premiere }}</p>
                     <div class="btn-box ">
                         <button class="button button-success"
-                        @click="todo.isFinished = !todo.isFinished" :class="{ 'button-fill':todo.isFinished }">
+                        @click="finishTodo(todo.id)"
+                        :class="{ 'button-fill':todo.isFinished }">
                             <i class="icon icon-check pull-right"></i>
                         </button>
                         <button @click="checkFinished(todo.id,todo.isFinished)" class="button button-danger">
