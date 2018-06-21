@@ -10,6 +10,7 @@
 
 1. todo的列表内容，外侧包裹一个content类名，不然会挤到上部;
 2. 查找按钮类名添加，样式button button-success button-fill
+3. 将时间戳存储本地，取出后使用过滤器将时间格式化，显示在页面上
 
 ### list
 

@@ -1,5 +1,12 @@
 // 任意的功能：1.找见关键数据 2.将数据与视图建立联系3.操控数据
 //在控制要显示的数据的时候，千万不要通过点击按钮来直接控制所有的数据，而是利用计算属性，创造出两个新的数据。一个全部都是完成的，一个全部都是未完成的，然后再创造一个真正要显示的数据
+
+//时间戳
+Vue.filter('premiere',(value)=>{
+    //引用类型的需要深拷贝
+    let date = new Date(value)
+    return date.getFullYear() + '年' + (date.getMonth()+1) + '月'+ date.getDate() + "日";
+})
 //创建vue实例
 new Vue({
     el: "#app", //将实例挂载在#app上
@@ -17,7 +24,7 @@ new Vue({
         preRemoveId:null, //准备要删除的todo的id
         isInpShow:false, //关键数据：控制输入布局的
         newtitle:'', //新增todo的input绑定的数据
-        isSelectShow:true, //关键数据：控制按钮切换模式
+        isSelectShow:false, //关键数据：控制按钮切换模式
         selectNavs:[ //选择模式的操控按钮
             {id:1,title:'A',type:'all',theme:'success'},
             {id:2,title:'F',type:'finished',theme:'primary'},
@@ -57,10 +64,12 @@ new Vue({
             }))
         },
         add(){  //增加新的todo
-            this.todos.push({
-                title:this.newtitle,
+            newtitle = this.newtitle
+            this.todos.unshift({
+                title:newtitle,
                 isFinished:false,
-                id:++this.count_id
+                id:++this.count_id,
+                time:Date.now()
             })
             //使新增布局消失
             this.isInpShow = false;
@@ -68,10 +77,10 @@ new Vue({
         },
         selectAll(){ //全选
             let isAll = this.todos.every((item)=>{
-                return item.isSelected
+                return item.isSelected;
             })
             this.todos.forEach((item)=>{
-                return item.isSelected = !isAll
+                return item.isSelected = !isAll;
             })
         },
         controlAll(type){
@@ -85,8 +94,8 @@ new Vue({
         removeAll(){ //删除所有
             this.todos=this.todos.filter((item)=>{
                 if(!item.isSelected){
-                    return item;
-                }
+                    return item;  //判断如果未选中,返回未选中项
+                }        
             })
             localStorage.todos = JSON.stringify(this.todos)
         },
@@ -99,20 +108,6 @@ new Vue({
                 case 3:this.controlAll(false);break;
                 case 4:this.removeAll();break;
                 default:break;
-            }
-        }
-    },
-    watch:{
-        isInpShow : function(newval){
-            //当新增布局消失的时候，清空
-            this.newtitle = ''
-        },
-        isSelectShow:function(newval){
-            if(newval === false){
-                //如果模式切换为普通模式的时候
-                this.todos.forEach((item)=>{
-                    item.isSelected = false
-                })
             }
         }
     },
@@ -139,5 +134,20 @@ new Vue({
                 case 'unfinished':return this.unfinishedTodos;
             }        
         }
+    },
+    watch:{
+        isInpShow : function(newval){
+            //当新增布局消失的时候，清空
+            this.newtitle = ''
+        },
+        isSelectShow : function(newval){
+            if(newval === true){
+                //如果模式切换为普通模式的时候
+                this.todos.forEach((item)=>{
+                    item.isSelected = false;
+                })
+            }
+        }
     }
 })
+
